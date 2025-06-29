@@ -7,6 +7,9 @@
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
     "test:report": "playwright show-report",
+    "test:visual": "playwright test --config=playwright-visual.config.js",
+    "test:visual:update": "playwright test --config=playwright-visual.config.js --update-snapshots",
+    "test:visual:report": "playwright show-report visual-regression-report",
     "k6:test": "k6 run load-tests/fanvue-load-test.js",
     "k6:cloud": "k6 cloud load-tests/fanvue-load-test.js",
     "testrail:upload": "node scripts/upload-to-testrail.js",
@@ -17,7 +20,9 @@
     "@playwright/test": "^1.45.0",
     "@axe-core/playwright": "^4.9.0",
     "eslint": "^8.57.0",
-    "prettier": "^3.3.0"
+    "prettier": "^3.3.0",
+    "pixelmatch": "^5.3.0",
+    "pngjs": "^7.0.0"
   },
   "dependencies": {
     "axios": "^1.7.0",
