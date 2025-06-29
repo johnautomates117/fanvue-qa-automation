@@ -209,3 +209,4 @@ Machine-readable format for integrations:
 3. **A/B Testing**: Compare different versions visually
 4. **Performance**: Optimize screenshot comparison speed
 5. **AI Enhancement**: Use AI to ignore insignificant changes
+
