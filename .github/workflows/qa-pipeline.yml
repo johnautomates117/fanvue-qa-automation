@@ -142,8 +142,8 @@ jobs:
         path: tests/visual/__screenshots__/
         retention-days: 30
     
-    - name: Comment PR with visual diff results
-      if: github.event_name == 'pull_request' && steps.visual-tests.outputs.test_mode == 'comparison'
+    - name: Comment PR with visual diff results  
+      if: github.event_name == 'pull_request'
       uses: actions/github-script@v6
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
@@ -152,9 +152,12 @@ jobs:
           const path = require('path');
           const resultsPath = 'visual-test-results.json';
           
+          // Get the test mode from the previous step output
+          const testMode = '${{ steps.visual-tests.outputs.test_mode }}';
+          
           let comment = '';
           
-          if (steps.visual-tests.outputs.test_mode === 'baseline') {
+          if (testMode === 'baseline') {
             comment = `## 📸 Visual Regression Baselines Created
             
             Initial baseline screenshots have been captured for visual regression testing.
@@ -186,6 +189,11 @@ jobs:
               Visual tests completed but results could not be parsed.
               Check the workflow artifacts for details.`;
             }
+          } else if (testMode === 'comparison') {
+            comment = `## ⚠️ Visual Test Results
+            
+            Visual tests ran in comparison mode but no results file was generated.
+            Check the workflow artifacts for details.`;
           }
           
           if (comment) {
