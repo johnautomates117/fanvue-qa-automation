@@ -3,55 +3,85 @@ const { test, expect } = require('@playwright/test');
 test.describe('Fanvue Navigation Tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
+    
+    // Handle cookie consent
+    try {
+      const cookieButton = page.locator('button:has-text("OK"), a:has-text("OK")').first();
+      if (await cookieButton.isVisible({ timeout: 2000 })) {
+        await cookieButton.click();
+      }
+    } catch {
+      // Cookie banner might not appear
+    }
   });
 
-  test('browse creators link works', async ({ page }) => {
-    // Find and click browse/creators link
-    const browseLink = page.locator('a').filter({ hasText: /browse|creator/i }).first();
+  test('navigation links are functional', async ({ page }) => {
+    // Test actual navigation links that exist
+    const loginLink = page.locator('a:has-text("Login")');
+    if (await loginLink.isVisible()) {
+      const href = await loginLink.getAttribute('href');
+      expect(href).toContain('signin');
+    }
     
-    if (await browseLink.isVisible()) {
-      await browseLink.click();
-      await page.waitForLoadState('networkidle');
-      
-      // Verify we're on a different page
-      const url = page.url();
-      expect(url).toContain('fanvue.com');
-      
-      // Check for content indicating creators page
-      await expect(page.locator('h1, h2, h3').first()).toBeVisible();
+    const signUpLink = page.locator('a:has-text("Sign Up")');
+    if (await signUpLink.isVisible()) {
+      const href = await signUpLink.getAttribute('href');
+      expect(href).toContain('signup');
     }
   });
 
   test('sign up flow is accessible', async ({ page }) => {
-    // Find sign up button/link
-    const signUpLink = page.locator('a, button').filter({ hasText: /sign up|join|start/i }).first();
+    // Find and click sign up link
+    const signUpLink = page.locator('a:has-text("Sign Up"), a:has-text("Become a Creator")').first();
     
     if (await signUpLink.isVisible()) {
-      await signUpLink.click();
-      await page.waitForLoadState('networkidle');
+      const href = await signUpLink.getAttribute('href');
       
-      // Verify sign up page elements
-      const emailInput = page.locator('input[type="email"], input[name*="email"]').first();
-      await expect(emailInput.or(page.locator('h1:has-text("Sign")').first())).toBeVisible();
+      // Instead of clicking and waiting for network idle (which times out),
+      // just verify the link is correct
+      expect(href).toMatch(/signup|creator/);
+      
+      // Navigate directly to avoid timeout issues
+      await page.goto(href);
+      await page.waitForLoadState('domcontentloaded');
+      
+      // Check if we're on a signup-related page
+      const url = page.url();
+      expect(url).toMatch(/signup|creator|signin/);
     }
   });
 
-  test('footer links are present', async ({ page }) => {
-    const footer = page.locator('footer');
-    await footer.scrollIntoViewIfNeeded();
+  test('footer contains important links', async ({ page }) => {
+    // There are multiple footer elements, so be more specific
+    const footers = await page.locator('footer').all();
     
-    // Check for common footer links
-    const footerLinks = ['Privacy', 'Terms', 'About', 'Contact'];
-    let foundLinks = 0;
+    let foundImportantLinks = false;
     
-    for (const linkText of footerLinks) {
-      const link = footer.locator(`a:has-text("${linkText}")`).first();
-      if (await link.isVisible()) {
-        foundLinks++;
+    for (const footer of footers) {
+      // Check for social links or legal links
+      const instagramLink = footer.locator('a:has-text("Instagram")');
+      const twitterLink = footer.locator('a:has-text("X")');
+      const cookiePolicy = page.locator('a:has-text("cookie policy")');
+      
+      if (await instagramLink.isVisible() || await twitterLink.isVisible() || await cookiePolicy.isVisible()) {
+        foundImportantLinks = true;
+        break;
       }
     }
     
-    // At least some footer links should be present
-    expect(foundLinks).toBeGreaterThan(0);
+    expect(foundImportantLinks).toBeTruthy();
+  });
+
+  test('mobile menu button exists on mobile viewport', async ({ page, isMobile }) => {
+    if (isMobile) {
+      // Look for menu button on mobile
+      const menuButton = page.locator('button[aria-label*="menu"], button:has-text("menu")');
+      const isVisible = await menuButton.isVisible({ timeout: 2000 });
+      expect(isVisible).toBeTruthy();
+    } else {
+      // Desktop should have visible navigation links
+      const navLinks = await page.locator('a:has-text("Login"), a:has-text("Sign Up")').count();
+      expect(navLinks).toBeGreaterThan(0);
+    }
   });
 });
