@@ -23,10 +23,10 @@ jobs:
         browser: [chromium, firefox, webkit]
     
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Setup Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: '18'
         
@@ -42,7 +42,7 @@ jobs:
     
     - name: Upload test results
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test-results-${{ matrix.browser }}
         path: |
@@ -63,12 +63,12 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
     
     - name: Setup Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: '18'
     
@@ -79,7 +79,7 @@ jobs:
     
     - name: Download visual baselines
       id: download-baselines
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: visual-baselines
         path: tests/visual/__screenshots__
@@ -125,7 +125,7 @@ jobs:
     
     - name: Upload visual test results
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: visual-regression-results
         path: |
@@ -136,7 +136,7 @@ jobs:
     
     - name: Upload visual baselines
       if: (github.ref == 'refs/heads/main' || steps.check-baselines.outputs.has_baselines == 'false') && success()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: visual-baselines
         path: tests/visual/__screenshots__/
@@ -144,7 +144,7 @@ jobs:
     
     - name: Comment PR with visual diff results  
       if: github.event_name == 'pull_request'
-      uses: actions/github-script@v6
+      uses: actions/github-script@v7
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
@@ -210,7 +210,7 @@ jobs:
     needs: e2e-tests
     
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Setup k6
       run: |
@@ -225,7 +225,7 @@ jobs:
       continue-on-error: true
     
     - name: Upload performance results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: k6-results
         path: k6-results.json
@@ -235,7 +235,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Run security headers check
       run: |
