@@ -1,0 +1,182 @@
+/* Visual Regression Test Styles
+ * These styles are injected during visual regression tests to ensure consistency
+ */
+
+/* Hide dynamic content that changes between test runs */
+.timestamp,
+.relative-time,
+.time-ago,
+.date-display,
+.live-count,
+.user-count,
+.view-count,
+.like-count,
+.follower-count,
+.notification-count,
+.unread-indicator,
+.online-status,
+.typing-indicator,
+.loading-spinner,
+.skeleton-loader,
+[data-testid="dynamic-content"],
+[data-dynamic="true"] {
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+/* Disable all animations and transitions */
+*,
+*::before,
+*::after {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    animation-fill-mode: forwards !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+    transition-property: none !important;
+    transform: none !important;
+}
+
+/* Disable smooth scrolling */
+html {
+    scroll-behavior: auto !important;
+}
+
+/* Hide videos to avoid frame differences */
+video {
+    visibility: hidden !important;
+}
+
+/* Hide iframes (ads, embeds, etc.) */
+iframe {
+    visibility: hidden !important;
+}
+
+/* Stabilize hover states */
+*:hover {
+    transition: none !important;
+    animation: none !important;
+}
+
+/* Normalize form inputs */
+input,
+textarea,
+select {
+    caret-color: transparent !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #999999 !important;
+    opacity: 1 !important;
+}
+
+/* Hide cursors and selections */
+::selection {
+    background-color: transparent !important;
+    color: inherit !important;
+}
+
+::-moz-selection {
+    background-color: transparent !important;
+    color: inherit !important;
+}
+
+/* Normalize focus states */
+*:focus {
+    outline: 2px solid #4A90E2 !important;
+    outline-offset: 2px !important;
+}
+
+/* Hide scrollbars for consistency */
+::-webkit-scrollbar {
+    display: none !important;
+}
+
+* {
+    scrollbar-width: none !important;
+}
+
+/* Ensure consistent font rendering */
+* {
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+}
+
+/* Hide ads and promotional content */
+.ad,
+.advertisement,
+.promo,
+.promotion,
+[data-ad],
+[data-promo],
+[id*="google_ads"],
+[class*="google_ads"] {
+    display: none !important;
+}
+
+/* Stabilize lazy-loaded images */
+img[loading="lazy"] {
+    opacity: 1 !important;
+}
+
+/* Hide cookie banners and popups */
+[class*="cookie"],
+[class*="consent"],
+[class*="gdpr"],
+[class*="privacy-notice"],
+[id*="cookie"],
+[id*="consent"] {
+    display: none !important;
+}
+
+/* Normalize button states */
+button,
+a[role="button"],
+input[type="submit"],
+input[type="button"] {
+    cursor: pointer !important;
+}
+
+button:disabled,
+button[disabled] {
+    cursor: not-allowed !important;
+    opacity: 0.6 !important;
+}
+
+/* Hide chat widgets */
+[class*="chat-widget"],
+[class*="support-chat"],
+[id*="tawk"],
+[id*="intercom"],
+[id*="drift"] {
+    display: none !important;
+}
+
+/* Ensure consistent line heights */
+* {
+    line-height: normal !important;
+}
+
+/* Hide tooltips */
+.tooltip,
+[role="tooltip"],
+[data-tooltip] {
+    display: none !important;
+}
+
+/* Stabilize progress indicators */
+progress,
+[role="progressbar"],
+.progress-bar {
+    animation: none !important;
+}
+
+/* Hide live streaming indicators */
+.live,
+.live-badge,
+.streaming,
+[data-live="true"] {
+    display: none !important;
+}
