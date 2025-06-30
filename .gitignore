@@ -1,32 +1,75 @@
 # Dependencies
 node_modules/
 
-# Test results
+# Test Results
 test-results/
 playwright-report/
 visual-regression-report/
+performance-results/
+
+# Screenshots and Videos
 screenshots/
-tests/visual/__screenshots__/
+videos/
+traces/
 
-# Performance test results
-k6-results.json
+# Visual Regression Snapshots
+tests/visual/screenshots/
+*.png-snapshots/
 
-# Environment variables
+# Environment Variables
 .env
 .env.local
+.env.*.local
 
 # IDE
 .vscode/
 .idea/
-
-# OS
+*.swp
+*.swo
 .DS_Store
-Thumbs.db
 
-# Logs
+# Build
+dist/
+build/
 *.log
-npm-debug.log*
 
-# Temporary files
+# Temporary Files
 *.tmp
 *.temp
+.cache/
+
+# Coverage
+coverage/
+.nyc_output/
+
+# OS Files
+Thumbs.db
+.DS_Store
+
+# Playwright
+pw-browsers/
+.auth/
+
+# TestRail
+testrail-run.json
+testrail-summary.json
+
+# Sentry
+.sentryclirc
+
+# k6
+k6-results/
+
+# TypeScript
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Lock files (keep package-lock.json)
+yarn.lock
+pnpm-lock.yaml
